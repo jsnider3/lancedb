@@ -3787,6 +3787,15 @@ mod tests {
             self.called.store(true, Ordering::Relaxed);
             original
         }
+
+        // Hands the store back untouched, so a listing has nothing to go around.
+        fn wrap_paginated(
+            &self,
+            _store_prefix: &str,
+            original: Arc<dyn object_store::list::PaginatedListStore>,
+        ) -> Option<Arc<dyn object_store::list::PaginatedListStore>> {
+            Some(original)
+        }
     }
 
     #[tokio::test]
